@@ -1,4 +1,3 @@
-
 import os
 import sys
 import pandas as pd
@@ -22,7 +21,8 @@ def prompts(name, description):
 
 
 class simulationControl:
-    def __init__(self, sumocfgfile: str, netfile: str, dumpfile: str, originalstatefile: str, tempstatefile: str, figfolder: str) -> None:
+    def __init__(self, sumocfgfile: str, netfile: str, dumpfile: str, originalstatefile: str, tempstatefile: str,
+                 figfolder: str) -> None:
         self.sumocfgfile = sumocfgfile
         self.netfile = netfile
         self.dumpfile = dumpfile
@@ -121,13 +121,15 @@ class intersectionPerformance:
                 upstream_list.append(edge.id[0])
             junction_data = edgedata[edgedata["edgeID"].isin(upstream_list)]
             speed_avg = (
-                junction_data['speed'] * junction_data['left']).sum() / junction_data['left'].sum()
+                                junction_data['speed'] * junction_data['left']).sum() / junction_data['left'].sum()
             waitingTime_avg = (
-                junction_data['waitingTime'] * junction_data['left']).sum() / junction_data['left'].sum()
+                                      junction_data['waitingTime'] * junction_data['left']).sum() / junction_data[
+                                  'left'].sum()
             timeLoss_avg = (
-                junction_data['timeLoss'] * junction_data['left']).sum() / junction_data['left'].sum()
+                                   junction_data['timeLoss'] * junction_data['left']).sum() / junction_data[
+                               'left'].sum()
             volume_avg = (
-                junction_data['speed'] * 3.6 * junction_data['density']).mean()
+                    junction_data['speed'] * 3.6 * junction_data['density']).mean()
             junction_summary_dic = {"Juction_id": j_id, "speed_avg": speed_avg,
                                     "volume_avg": volume_avg, "timeLoss_avg": timeLoss_avg}
             new_row = pd.DataFrame(junction_summary_dic, index=[0])
@@ -162,7 +164,6 @@ class intersectionSignalOptimization:
             The output will tell you whether you have finished this command successfully.
             The input should be a comma seperated string, with each part representing a target intersection ID. """)
     def inference(self, target: str) -> str:
-
         if 'None' in target:
             return "Please provide the target intersection IDs."
 
@@ -188,7 +189,6 @@ class intersectionVisulization:
             The output will tell you whether you have finished this command successfully.
             The input should be a comma seperated string, with each part representing a target intersection ID. """)
     def inference(self, target: str) -> str:
-
         target_junction_id = target.replace(' ', '').split(',')
         options = f'-n {self.netfile} --width 5 --edge-color #606060'
 

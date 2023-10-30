@@ -8,7 +8,6 @@ from langchain.callbacks import get_openai_callback
 from langchain.memory import ConversationBufferMemory
 from langchain.agents import ZeroShotAgent, Tool, AgentExecutor
 
-
 temp = """
 You need to recall the original 'Question' before comming up with a 'Thought'. 
 2. You need to determine whether the human message is a traffic simulation control command or a question before making any move. If it is a traffic simulation control command, just execute the command and don't do any further information analysis. If it's neither, try to respond to it using your own ability and knowledge as a chat AI

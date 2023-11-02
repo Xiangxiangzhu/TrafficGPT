@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2023-11-02 10:47:24 by Eclipse SUMO GUI Version 1.18.0
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+
+    <input>
+        <net-file value="/Users/christtzm/tzm/PyWork/trans_llm/TrafficGPT/real-world-simulation-withTLS/gen_net/test4_1.net.xml"/>
+        <route-files value="/Users/christtzm/tzm/PyWork/trans_llm/TrafficGPT/real-world-simulation-withTLS/gen_net/test4_2.rou.xml"/>
+        <additional-files value="/Users/christtzm/tzm/PyWork/trans_llm/TrafficGPT/real-world-simulation-withTLS/gen_net/add.add.xml"/>
+    </input>
+
+    <processing>
+        <collision.action value="none"/>
+        <time-to-teleport value="1000"/>
+    </processing>
+
+    <traci_server>
+        <remote-port value="63720"/>
+    </traci_server>
+
+    <mesoscopic>
+        <mesosim value="TRUE"/>
+    </mesoscopic>
+
+    <gui_only>
+        <gui-settings-file value="/Users/christtzm/tzm/PyWork/trans_llm/TrafficGPT/real-world-simulation-withTLS/gen_net/viewsettings.xml"/>
+    </gui_only>
+
+</configuration>
+-->
+
+<snapshot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/state_file.xsd" version="1.18.0" time="0.00" type="meso">
+    <route id="!0" state="0" edges="219823957 219822986#2 219822984#0 219822984#1 219822984#2 830650861#4 1154482313#0 830653154#8 830653154#9 833484979 833484978"/>
+    <route id="!1" state="0" edges="29496808#0 29496808#1 29496808#2 29496808#2.341"/>
+    <route id="!2" state="0" edges="29496808#0 29496808#1 29496808#2 29496808#2.341"/>
+    <delay number="0" begin="3" end="0" depart="0.00" time="0.00"/>
+    <vType id="DEFAULT_VEHTYPE"/>
+    <vehicle id="0" depart="0.00" route="!0" distance="0 0" speedFactor="1.0600" state="0 9223372036854775807 0 -1000 -1 0 -9223372036854775808 -9223372036854775808 9223372036854775807"/>
+    <vehicle id="1" depart="0.00" route="!1" distance="0 0" speedFactor="0.9383" state="0 9223372036854775807 0 -1000 -1 0 -9223372036854775808 -9223372036854775808 9223372036854775807"/>
+    <vehicle id="2" depart="1.00" route="!2" distance="0 0" speedFactor="1.0104" state="0 9223372036854775807 0 -1000 -1 0 -9223372036854775808 -9223372036854775808 9223372036854775807"/>
+</snapshot>

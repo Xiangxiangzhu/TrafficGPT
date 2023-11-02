@@ -48,7 +48,7 @@ class simulationControl:
             raise RuntimeError(
                 "please declare environment variable 'SUMO_HOME'")
 
-        if_show_gui = False
+        if_show_gui = True
 
         if not if_show_gui:
             sumoBinary = checkBinary('sumo')
@@ -72,7 +72,7 @@ class simulationControl:
         traci.close()
         args = f'''-v -n {self.netfile} --measures speed,occupancy -i {self.dumpfile} \
             --default-width .5 --colormap RdYlGn  --max-width 3 --min-width .5 \
-            --min-color-value 0 --max-color-value 15 --max-width-value 100 --min-width-value 0'''
+            --min-color-value 0 --max-color-value 50 --max-width-value 100 --min-width-value 0'''
         fig_path = plot_heatmap(self.figfolder, args)
 
         return f"You have successfully proceeded the traffic simulation on SUMO for 600 seconds. And your final answer should include this sentence without changing anything: the road network heat map is kept at: `{fig_path}`."

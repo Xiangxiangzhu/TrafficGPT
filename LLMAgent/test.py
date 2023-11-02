@@ -34,11 +34,22 @@ if __name__ == '__main__':
         perform_agent.inference(target="4650")
 
     elif test_simulation:
+        # simulate_agent = simulationControl(
+        #     sumocfgfile='/Users/christtzm/tzm/PyWork/trans_llm/TrafficGPT/real-world-simulation-withTLS/xuancheng.sumocfg',
+        #     netfile='/Users/christtzm/tzm/PyWork/trans_llm/TrafficGPT/real-world-simulation-withTLS/xuancheng.net.xml',
+        #     dumpfile='/Users/christtzm/tzm/PyWork/trans_llm/TrafficGPT/real-world-simulation-withTLS/edgedata.xml',
+        #     originalstatefile='/Users/christtzm/tzm/PyWork/trans_llm/TrafficGPT/real-world-simulation-withTLS/originalstate.xml',
+        #     tempstatefile='/Users/christtzm/tzm/PyWork/trans_llm/TrafficGPT/real-world-simulation-withTLS/tempstate.xml',
+        #     figfolder='/Users/christtzm/tzm/PyWork/trans_llm/TrafficGPT/fig/'
+        # )
+        # simulate_agent.inference("0")
+        print("3333333")
         simulate_agent = simulationControl(
-            sumocfgfile = None,
-            netfile = None,
-            dumpfile = None,
-            originalstatefile = None,
-            tempstatefile = None,
-            figfolder = None
+            sumocfgfile='/Users/christtzm/tzm/PyWork/trans_llm/TrafficGPT/real-world-simulation-withTLS/gen_net/test4_1.sumocfg',
+            netfile='/Users/christtzm/tzm/PyWork/trans_llm/TrafficGPT/real-world-simulation-withTLS/gen_net/test4_1.net.xml',
+            dumpfile='/Users/christtzm/tzm/PyWork/trans_llm/TrafficGPT/real-world-simulation-withTLS/gen_net/edgedata.xml',
+            originalstatefile='/Users/christtzm/tzm/PyWork/trans_llm/TrafficGPT/real-world-simulation-withTLS/gen_net/originalstate.xml',
+            tempstatefile='/Users/christtzm/tzm/PyWork/trans_llm/TrafficGPT/real-world-simulation-withTLS/gen_net/tempstate.xml',
+            figfolder='./fig1/'
         )
+        simulate_agent.inference("0")

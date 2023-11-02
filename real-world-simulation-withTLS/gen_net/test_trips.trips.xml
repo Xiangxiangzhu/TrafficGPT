@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2023-10-31 21:49:41.026726 by randomTrips.py UNKNOWN
+<configuration>
+    <net-file value="test4.net.xml"/>
+    <length value="True"/>
+</configuration>
+-->
+
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
+    <trip id="0" depart="50.00" from="55083473#1.4.32" to="55083473#2"/>
+    <trip id="1" depart="51.00" from="55083473#1.4.32" to="55083473#2"/>
+    <trip id="2" depart="51.00" from="55083473#1.4.32" to="55083473#2"/>
+    <trip id="3" depart="51.00" from="55083473#1.4.32" to="55083473#2"/>
+    <trip id="4" depart="52.00" from="55083473#1.4.32" to="55083473#2"/>
+    <trip id="5" depart="52.00" from="55083473#1.4.32" to="55083473#2"/>
+</routes>

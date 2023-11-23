@@ -12,10 +12,12 @@ from LLMAgent.trafficTools import (
     intersectionPerformance,
     intersectionSignalOptimization,
     intersectionVisulization,
+    intersectionSpeedOptimization
 )
 
 import gradio as gr
 import openai.api_requestor
+
 openai.api_requestor.TIMEOUT_SECS = 30
 
 # ------------------------------------------------------------------------------
@@ -38,7 +40,7 @@ elif OPENAI_CONFIG['OPENAI_API_TYPE'] == 'openai':
     llm = ChatOpenAI(
         temperature=0,
         model_name='gpt-3.5-turbo-16k-0613',  # or any other model with 8k+ context
-        openai_api_base=OPENAI_CONFIG['OPENAI_BASE'],
+        # openai_api_base=OPENAI_CONFIG['OPENAI_BASE'],
         openai_api_key=OPENAI_CONFIG['OPENAI_KEY'],
         max_tokens=1024,
         request_timeout=60
@@ -48,18 +50,27 @@ elif OPENAI_CONFIG['OPENAI_API_TYPE'] == 'openai':
 # --ZH 初始化工具
 # --EN Initialize the tools
 
-if not os.path.exists('./fig/'):
-    os.mkdir('./fig/')
+if not os.path.exists('fig/'):
+    os.mkdir('fig/')
 
+# sumoCFGFile = './real-world-simulation-withTLS/xuancheng.sumocfg'
+# sumoNetFile = './real-world-simulation-withTLS/xuancheng.net.xml'
+# sumoRouFile = './real-world-simulation-withTLS/xuancheng.net.xml'
+# sumoEdgeDataFile = './real-world-simulation-withTLS/edgedata.xml'
+# sumoOriginalStateFile = './real-world-simulation-withTLS/originalstate.xml'
+# sumoTempStateFile = './real-world-simulation-withTLS/tempstate.xml'
+# sumoNewTLSFile = './real-world-simulation-withTLS/newTLS.add.xml'
+# targetFilePath = './fig1/'
 
-sumoCFGFile = './real-world-simulation-withTLS/xuancheng.sumocfg'
-sumoNetFile = './real-world-simulation-withTLS/xuancheng.net.xml'
-sumoRouFile = './real-world-simulation-withTLS/xuancheng.net.xml'
-sumoEdgeDataFile = './real-world-simulation-withTLS/edgedata.xml'
-sumoOriginalStateFile = './real-world-simulation-withTLS/originalstate.xml'
-sumoTempStateFile = './real-world-simulation-withTLS/tempstate.xml'
-sumoNewTLSFile = './real-world-simulation-withTLS/newTLS.add.xml'
+sumoCFGFile = './real-world-simulation-withTLS/gen_net/test4_1.sumocfg'
+sumoNetFile = './real-world-simulation-withTLS/gen_net/test4_1.net.xml'
+sumoRouFile = './real-world-simulation-withTLS/gen_net/test4_2.rou.xml'
+sumoEdgeDataFile = './real-world-simulation-withTLS/gen_net/edgedata.xml'
+sumoOriginalStateFile = './real-world-simulation-withTLS/gen_net/originalstate.xml'
+sumoTempStateFile = './real-world-simulation-withTLS/gen_net/tempstate.xml'
+sumoNewTLSFile = './real-world-simulation-withTLS/gen_net/newTLS.add.xml'
 targetFilePath = './fig/'
+
 toolModels = [
     simulationControl(
         sumoCFGFile, sumoNetFile, sumoEdgeDataFile,
@@ -69,7 +80,8 @@ toolModels = [
     intersectionSignalOptimization(
         sumoNetFile, sumoCFGFile, sumoRouFile, sumoNewTLSFile,
     ),
-    intersectionVisulization(sumoNetFile, targetFilePath)
+    intersectionVisulization(sumoNetFile, targetFilePath),
+    intersectionSpeedOptimization(sumoNetFile, sumoCFGFile, sumoRouFile)
 ]
 
 # ------------------------------------------------------------------------------
@@ -123,6 +135,7 @@ According to the data above, after optimization, Traffic volume has increased at
 # --EN Initilize the ConversationBot
 bot = ConversationBot(llm, toolModels, botPrefix, verbose=True)
 
+
 # ------------------------------------------------------------------------------
 # --ZH 设置 gradio 界面
 # --EN Configure the grdio interface
@@ -160,7 +173,7 @@ def respond(msg: str, chat_history: list, thoughts: str):
 
 
 with gr.Blocks(
-    title="Demo Traffic Management Bot 哈哈哈", theme=gr.themes.Base(text_size=gr.themes.sizes.text_lg)
+        title="Demo Traffic Management Bot 哈哈哈", theme=gr.themes.Base(text_size=gr.themes.sizes.text_lg)
 ) as demo:
     with gr.Row(visible=True, variant="panel"):
         with gr.Column(visible=True, variant='default'):
@@ -176,7 +189,7 @@ with gr.Blocks(
                     "Run the simulation",
                     "What's the most congested intersection?",
                     "How's the traffic for intersections? Show me the data in a table",
-                    "Locate intersection 4493 on the map",
+                    "Locate intersection 2287714189 on the map",
                     "Optimize the intersection with the highest timeloss."
                 ],
                 inputs=[humanMsg],
@@ -202,4 +215,4 @@ with gr.Blocks(
     clearBtn.click(reset, [chatbot, ReActMsg], [chatbot, ReActMsg])
 
 if __name__ == "__main__":
-    demo.launch()
+    demo.launch(share=True)

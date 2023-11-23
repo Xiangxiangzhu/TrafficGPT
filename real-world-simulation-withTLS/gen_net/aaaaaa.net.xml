@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<net version="1.16" junctionCornerDetail="5" limitTurnSpeed="5.50" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/net_file.xsd">
+
+    <location netOffset="-766115.41,-2534569.14" convBoundary="4093.99,15680.16,5807.80,17111.12"
+              origBoundary="113.543701,22.882896,113.860167,23.131650"
+              projParameter="+proj=utm +zone=49 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"/>
+
+    <type id="highway.motorway" priority="14" numLanes="2" speed="39.44"
+          allow="private emergency authority army vip passenger hov taxi bus coach delivery truck trailer motorcycle evehicle custom1 custom2"
+          oneway="1"/>
+    <type id="highway.motorway_link" priority="9" numLanes="1" speed="22.22"
+          allow="private emergency authority army vip passenger hov taxi bus coach delivery truck trailer motorcycle evehicle custom1 custom2"
+          oneway="1"/>
+
+    <edge id=":10736837074_0" function="internal">
+        <lane id=":10736837074_0_0" index="0" disallow="tram rail_urban rail rail_electric rail_fast ship" speed="27.78"
+              length="9.08" shape="5032.31,16978.03 5026.64,16971.02"/>
+        <lane id=":10736837074_0_1" index="1" disallow="tram rail_urban rail rail_electric rail_fast ship" speed="27.78"
+              length="9.08" shape="5034.84,16976.08 5029.10,16968.97"/>
+    </edge>
+    <edge id=":10736837080_0" function="internal">
+        <lane id=":10736837080_0_0" index="0" disallow="tram rail_urban rail rail_electric rail_fast ship" speed="27.78"
+              length="16.79"
+              shape="5026.52,16970.87 5023.36,16967.10 5021.13,16964.57 5018.74,16962.21 5015.10,16958.91"/>
+        <lane id=":10736837080_0_1" index="1" disallow="tram rail_urban rail rail_electric rail_fast ship" speed="27.78"
+              length="16.79"
+              shape="5028.97,16968.81 5025.73,16964.94 5023.43,16962.34 5020.97,16959.91 5017.22,16956.52"/>
+    </edge>
+
+    <junction id="10736855225" type="dead_end" x="5169.51" y="17111.12" incLanes="" intLanes=""
+              shape="5171.73,17108.82 5167.29,17113.42"/>
+    <junction id="1419167322" type="priority" x="4910.21" y="16847.26"
+              incLanes="219822984#2_0 219822984#2_1 830650861#3_0 830650861#3_1"
+              intLanes=":1419167322_0_0 :1419167322_0_1 :1419167322_2_0 :1419167322_2_1"
+              shape="4909.76,16851.16 4914.04,16846.40 4911.89,16843.86 4911.44,16842.74 4911.13,16841.53 4910.77,16840.06 4910.14,16838.19 4904.17,16840.49 4904.32,16841.21 4904.22,16841.42 4904.02,16841.51 4903.72,16841.50 4903.30,16841.39 4901.14,16847.41 4903.07,16848.02 4904.56,16848.39 4905.80,16848.70 4906.95,16849.14 4908.21,16849.90">
+        <request index="0" response="0000" foes="1100" cont="0"/>
+        <request index="1" response="0000" foes="1100" cont="0"/>
+        <request index="2" response="0011" foes="0011" cont="0"/>
+        <request index="3" response="0011" foes="0011" cont="0"/>
+    </junction>
+    <junction id="1419167324" type="priority" x="4688.17" y="16757.72" incLanes="830650861#2_0 830650861#2_1"
+              intLanes=":1419167324_0_0 :1419167324_0_1 :1419167324_2_0 :1419167324_2_1"
+              shape="4699.02,16768.99 4702.62,16763.70 4702.87,16763.07 4703.78,16756.74 4700.39,16756.53 4697.65,16756.72 4695.35,16756.92 4693.25,16756.73 4691.14,16755.75 4688.82,16753.59 4683.99,16757.80 4686.70,16760.71 4688.90,16762.66 4690.91,16764.06 4693.05,16765.31 4695.64,16766.82">
+        <request index="0" response="0000" foes="0000" cont="0"/>
+        <request index="1" response="0000" foes="0000" cont="0"/>
+        <request index="2" response="0000" foes="0000" cont="0"/>
+        <request index="3" response="0000" foes="0000" cont="0"/>
+    </junction>
+    <junction id="1419167325" type="priority" x="4442.81" y="15983.47" incLanes="830650862_0 830650862_1"
+              intLanes=":1419167325_0_0 :1419167325_0_1"
+              shape="4439.79,15984.55 4445.90,15982.63 4445.86,15982.49 4439.69,15984.21">
+        <request index="0" response="00" foes="00" cont="0"/>
+        <request index="1" response="00" foes="00" cont="0"/>
+    </junction>
+
+</net>

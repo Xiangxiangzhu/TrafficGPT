@@ -1,6 +1,7 @@
 from matplotlib import pyplot as plt
 from xml.etree import ElementTree as ET
 import matplotlib
+
 matplotlib.use('TkAgg')
 
 
@@ -109,11 +110,16 @@ def build_graph(file: str) -> Graph:
     root = eTree.getroot()
     for child in root:
         if child.tag == 'edge':
+            # I added this to avoid the error: KeyError: 'id'
+            for param in child.findall('param[@key="ref"]'):
+                child.remove(param)
+
             eid = child.attrib['id']
             if ':' not in eid:
                 fromNode = child.attrib['from']
                 toNode = child.attrib['to']
                 edge = Edge(eid, fromNode, toNode)
+                # print("name of eid is ", eid)
                 for gchild in child:
                     lid = gchild.attrib['id']
                     speed = float(gchild.attrib['speed'])

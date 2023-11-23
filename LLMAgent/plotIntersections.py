@@ -53,13 +53,13 @@ def plot_intersections(target_junction_id, folderpath, args=None) -> str:
     # all edges
     edge_n = {}
     for eid in net._id2edge:
-        print("edge has: ", eid)
+        # print("edge has: ", eid)
         edge_n[eid] = set()
 
     # all nodes
     node_n = {}
     for nid in net._id2node:
-        print("node has: ", nid)
+        # print("node has: ", nid)
         t = net._id2node[nid]
         node_n[nid] = t
 

@@ -12,7 +12,7 @@
     <processing>
         <time-to-teleport value="1000"/>
         <collision.action value="none"/>
-        <mesosim value="TRUE"/>
+<!--        <mesosim value="TRUE"/>-->
     </processing>
 
 </configuration>

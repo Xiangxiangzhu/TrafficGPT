@@ -43,8 +43,8 @@ elif OPENAI_CONFIG['OPENAI_API_TYPE'] == 'openai':
         request_timeout=60
     )
 
-if not os.path.exists('./fig/'):
-    os.mkdir('./fig/')
+if not os.path.exists('fig/'):
+    os.mkdir('fig/')
 
 toolModels = [
     roadVolumeTrend('./fig/'),

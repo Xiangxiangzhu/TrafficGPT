@@ -6,6 +6,7 @@ from sumolib import checkBinary
 
 from LLMAgent.buildGraph import Lane, Edge, Junction, Graph, build_graph
 from LLMAgent.websterOptimize import Webster
+from LLMAgent.vsl_control import VSL
 from LLMAgent.plotIntersections import plot_intersections
 from LLMAgent.plotHeatmap import plot_heatmap
 from LLMAgent.readDump import read_last_dump
@@ -39,6 +40,7 @@ class simulationControl:
              For example: if you never called this tool before and this is your first time calling this tool, the input should be 0; if you have called this tool twice, the imput should be 2.""")
     def inference(self, ordinal: str) -> str:
         ordinal_number = eval(ordinal)
+        print("ordinal number is: ", ordinal_number)
         STEP = 600
 
         if 'SUMO_HOME' in os.environ:
@@ -56,11 +58,11 @@ class simulationControl:
             sumoBinary = checkBinary('sumo-gui')
 
         traci.start([sumoBinary, "-c", self.sumocfgfile])
-        print('start reading state')
-        if ordinal_number > 0:
-            traci.simulation.loadState(self.tempstatefile)
-        else:
-            traci.simulation.loadState(self.originalstatefile)
+        # print('start reading state')
+        # if ordinal_number > 0:
+        #     traci.simulation.loadState(self.tempstatefile)
+        # else:
+        #     traci.simulation.loadState(self.originalstatefile)
 
         start_time = int(traci.simulation.getTime() / 1000)
         print('read state done!')
@@ -86,9 +88,9 @@ class intersectionPerformance:
     @prompts(name='Get Intersection Performance',
              description="""
             This tool is used to get the traffic performance of all the intersections or several target intersections in the simulation road network.
-            The output will provid traffic status information of intersetions in a tabular dataset.
+            The output will provide traffic status information of intersections in a tabular dataset.
             with various columns, such as Junction_id, speed_avg, volume_avg, and timeLoss_avg. Each row represents data for a specific junction. 
-            Include the tabular dataset in markdown formart directly in your final answer! Do not try to change anything including the format! 
+            Include the tabular dataset in markdown format directly in your final answer! Do not try to change anything including the format! 
             The input If you do not have information of any specific intersection ID and the human didn't specify to get information of all the intersections, the input should be a string: 'None', and the tool will give you an overview data for the final answer so you don't need more specific information about certain intersections. 
             If you have specific target intersection IDs, the input should be a comma seperated string, with each part representing a target intersection ID.
             Only if you can find a word 'all' in the human message, the input can be a string: 'All'. """)
@@ -108,14 +110,17 @@ class intersectionPerformance:
 
         junction_list = graph.junctions
         junction_summary_table = pd.DataFrame(
-            columns=['Juction_id', 'speed_avg', 'volume_avg', 'timeLoss_avg'])
+            columns=['Junction_id', 'speed_avg', 'volume_avg', 'timeLoss_avg'])
+
         for j_id, junction in junction_list.items():
-            if len(junction.inEdges) <= 2:
+            if len(junction.inEdges) < 2:
                 continue
             # print(j_id)
+            # print("junction id is: ", j_id)
+            # print("junction in edges have: ", len(junction.inEdges))
+
             if have_target and j_id not in target_junction_id:
                 continue
-            # print(j_id)
             upstream_list = []
             for edge in junction.inEdges:
                 upstream_list.append(edge.id[0])
@@ -130,7 +135,7 @@ class intersectionPerformance:
                                'left'].sum()
             volume_avg = (
                     junction_data['speed'] * 3.6 * junction_data['density']).mean()
-            junction_summary_dic = {"Juction_id": j_id, "speed_avg": speed_avg,
+            junction_summary_dic = {"Junction_id": j_id, "speed_avg": speed_avg,
                                     "volume_avg": volume_avg, "timeLoss_avg": timeLoss_avg}
             new_row = pd.DataFrame(junction_summary_dic, index=[0])
             junction_summary_table = pd.concat(
@@ -199,3 +204,29 @@ class intersectionVisulization:
         )
 
         return f"You have successfully visualized the location of intersection {target} on the following map. And your final answer should include this sentence without changing anything: The location of intersection {target} is kept at: `{fig_path}`."
+
+
+class intersectionSpeedOptimization:
+    def __init__(self, netfile: str, configfile: str, routefile: str) -> None:
+        self.netfile = netfile
+        self.configfile = configfile
+        self.routefile = routefile
+
+    @prompts(name='Optimize Intersection Speed Limits',
+             description="""
+            This tool is used to optimize the speed limits of several target intersections in the simulation road network.
+            Do not use this tool unless the human user asks to optimize intersections.
+            Use this tool when human asks to optimize the speed limits of intersections.
+            The output will tell you whether you have finished this command successfully.
+            The input should be a comma seperated string, with each part representing a target intersection ID. """)
+    def inference(self, target: str) -> str:
+        if 'None' in target:
+            return "Please provide the target intersection IDs."
+
+        options = f'-n {self.netfile} -f {self.configfile} -r {self.routefile}'
+        target_ID = target.replace(' ', '').split(',')
+
+        optimizer = VSL(target_ID, options)
+        optimizer.run_vsl()
+
+        return f"The signal control scheme for intersection {target} has already been optimized successfully according to Webster's algorithm. The new TLS program has been written to the configuration file. If you want to see the traffic status after the optimization, you need to run the simulation again."

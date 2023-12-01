@@ -40,7 +40,7 @@ elif OPENAI_CONFIG['OPENAI_API_TYPE'] == 'openai':
     llm = ChatOpenAI(
         temperature=0,
         model_name='gpt-3.5-turbo-16k-0613',  # or any other model with 8k+ context
-        # openai_api_base=OPENAI_CONFIG['OPENAI_BASE'],
+        openai_api_base=OPENAI_CONFIG['OPENAI_BASE'],
         openai_api_key=OPENAI_CONFIG['OPENAI_KEY'],
         max_tokens=1024,
         request_timeout=60
@@ -215,5 +215,5 @@ with gr.Blocks(
     clearBtn.click(reset, [chatbot, ReActMsg], [chatbot, ReActMsg])
 
 if __name__ == "__main__":
-    demo.launch()
-    # demo.launch(share=True)
+    # demo.launch()
+    demo.launch(share=True)

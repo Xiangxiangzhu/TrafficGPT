@@ -37,10 +37,20 @@ if OPENAI_CONFIG['OPENAI_API_TYPE'] == 'azure':
     )
 elif OPENAI_CONFIG['OPENAI_API_TYPE'] == 'openai':
     os.environ["OPENAI_API_KEY"] = OPENAI_CONFIG['OPENAI_KEY']
+    if OPENAI_CONFIG['OPENAI_KEY'] is "EMPTY":
+        import openai
+
+        openai.api_key = OPENAI_CONFIG['OPENAI_KEY']
+        openai.api_base = OPENAI_CONFIG['OPENAI_BASE']
+        model_name = openai.Model.list()["data"][0]["id"]
+    else:
+        OPENAI_CONFIG['OPENAI_BASE'] = 'https://api.openai.com/v1'
+        model_name = 'gpt-3.5-turbo-16k-0613'
+
     llm = ChatOpenAI(
         temperature=0,
-        model_name='gpt-3.5-turbo-16k-0613',  # or any other model with 8k+ context
-        # openai_api_base=OPENAI_CONFIG['OPENAI_BASE'],
+        model_name=model_name,  # or any other model with 8k+ context
+        openai_api_base=OPENAI_CONFIG['OPENAI_BASE'],
         openai_api_key=OPENAI_CONFIG['OPENAI_KEY'],
         max_tokens=1024,
         request_timeout=60

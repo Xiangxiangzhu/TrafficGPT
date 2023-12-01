@@ -1,6 +1,7 @@
 import geopandas as gpd
 import matplotlib
-matplotlib.use('TkAgg')
+# matplotlib.use('TkAgg')
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
 from matplotlib.colorbar import ColorbarBase

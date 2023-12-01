@@ -2,7 +2,9 @@ from matplotlib import pyplot as plt
 from xml.etree import ElementTree as ET
 import matplotlib
 
-matplotlib.use('TkAgg')
+# matplotlib.use('TkAgg')
+matplotlib.use('Agg')
+
 
 
 class Lane:

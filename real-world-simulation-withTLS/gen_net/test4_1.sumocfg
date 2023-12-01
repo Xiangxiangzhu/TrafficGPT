@@ -6,7 +6,7 @@
         <net-file value="test4_1.net.xml"/>
         <route-files value="test4_2.rou.xml"/>
         <gui-settings-file value="viewsettings.xml"/>
-        <additional-files value="add.add.xml"/>
+        <additional-files value="add.add.xml,newTLS.add.xml"/>
     </input>
 
     <processing>

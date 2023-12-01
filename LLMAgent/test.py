@@ -1,9 +1,10 @@
-from trafficTools import intersectionVisulization, intersectionPerformance, simulationControl, intersectionSpeedOptimization
+from trafficTools import intersectionVisulization, intersectionPerformance, simulationControl, \
+    intersectionSpeedOptimization
 
 test_visualization = False
-test_performance = False
+test_performance = True
 test_simulation = False
-test_vsl = True
+test_vsl = False
 
 if __name__ == '__main__':
     if test_visualization:
@@ -26,7 +27,7 @@ if __name__ == '__main__':
             netfile="/Users/christtzm/tzm/PyWork/trans_llm/TrafficGPT/real-world-simulation-withTLS/gen_net/test4_1.net.xml",
             dumpfile="/Users/christtzm/tzm/PyWork/trans_llm/TrafficGPT/real-world-simulation-withTLS/gen_net/edgedata.xml"
         )
-        perform_agent.inference(target="None")
+        aaaa = perform_agent.inference(target="All")
 
         # perform_agent = intersectionPerformance(
         #     netfile="/Users/christtzm/tzm/PyWork/trans_llm/TrafficGPT/real-world-simulation-withTLS/xuancheng.net.xml",

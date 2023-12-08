@@ -37,11 +37,17 @@ if OPENAI_CONFIG['OPENAI_API_TYPE'] == 'azure':
     )
 elif OPENAI_CONFIG['OPENAI_API_TYPE'] == 'openai':
     os.environ["OPENAI_API_KEY"] = OPENAI_CONFIG['OPENAI_KEY']
-    if OPENAI_CONFIG['OPENAI_KEY'] is "EMPTY":
+    if OPENAI_CONFIG['OPENAI_KEY'] == "EMPTY":
         import openai
 
         openai.api_key = OPENAI_CONFIG['OPENAI_KEY']
         openai.api_base = OPENAI_CONFIG['OPENAI_BASE']
+        print("eeee is ", OPENAI_CONFIG['OPENAI_KEY'])
+        print("rrrr is ", OPENAI_CONFIG['OPENAI_BASE'])
+        models = openai.Model.list()
+        print("1111")
+        model = models["data"][0]["id"]
+
         model_name = openai.Model.list()["data"][0]["id"]
     else:
         OPENAI_CONFIG['OPENAI_BASE'] = 'https://api.openai.com/v1'

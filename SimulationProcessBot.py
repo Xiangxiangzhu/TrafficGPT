@@ -8,11 +8,13 @@ from langchain.chat_models import AzureChatOpenAI, ChatOpenAI
 from LLMAgent.ConversationBot import ConversationBot
 
 from LLMAgent.trafficTools import (
-    simulationControl,
-    intersectionPerformance,
-    intersectionSignalOptimization,
-    intersectionVisulization,
-    intersectionSpeedOptimization
+    SimulationControl,
+    IntersectionTrafficSituation,
+    # intersectionSignalOptimization,
+    IntersectionOptimization,
+    IntersectionVisualization,
+    IntersectionSpeedOptimization,
+    IntersectionAnalysis
 )
 
 import gradio as gr
@@ -37,7 +39,7 @@ if OPENAI_CONFIG['OPENAI_API_TYPE'] == 'azure':
     )
 elif OPENAI_CONFIG['OPENAI_API_TYPE'] == 'openai':
     os.environ["OPENAI_API_KEY"] = OPENAI_CONFIG['OPENAI_KEY']
-    if OPENAI_CONFIG['OPENAI_KEY'] is "EMPTY":
+    if OPENAI_CONFIG['OPENAI_KEY'] == "EMPTY":
         import openai
 
         openai.api_key = OPENAI_CONFIG['OPENAI_KEY']
@@ -55,6 +57,8 @@ elif OPENAI_CONFIG['OPENAI_API_TYPE'] == 'openai':
         max_tokens=1024,
         request_timeout=60
     )
+else:
+    llm = None
 
 # ------------------------------------------------------------------------------
 # --ZH 初始化工具
@@ -62,15 +66,6 @@ elif OPENAI_CONFIG['OPENAI_API_TYPE'] == 'openai':
 
 if not os.path.exists('fig/'):
     os.mkdir('fig/')
-
-# sumoCFGFile = './real-world-simulation-withTLS/xuancheng.sumocfg'
-# sumoNetFile = './real-world-simulation-withTLS/xuancheng.net.xml'
-# sumoRouFile = './real-world-simulation-withTLS/xuancheng.net.xml'
-# sumoEdgeDataFile = './real-world-simulation-withTLS/edgedata.xml'
-# sumoOriginalStateFile = './real-world-simulation-withTLS/originalstate.xml'
-# sumoTempStateFile = './real-world-simulation-withTLS/tempstate.xml'
-# sumoNewTLSFile = './real-world-simulation-withTLS/newTLS.add.xml'
-# targetFilePath = './fig1/'
 
 sumoCFGFile = './real-world-simulation-withTLS/gen_net/test4_1.sumocfg'
 sumoNetFile = './real-world-simulation-withTLS/gen_net/test4_1.net.xml'
@@ -80,18 +75,18 @@ sumoOriginalStateFile = './real-world-simulation-withTLS/gen_net/originalstate.x
 sumoTempStateFile = './real-world-simulation-withTLS/gen_net/tempstate.xml'
 sumoNewTLSFile = './real-world-simulation-withTLS/gen_net/newTLS.add.xml'
 targetFilePath = './fig/'
+sumoIntersectionDescription = '/Users/christtzm/tzm/PyWork/trans_llm/TrafficGPT/real-world-simulation-withTLS/gen_net/intersection_description.json'
 
 toolModels = [
-    simulationControl(
+    SimulationControl(
         sumoCFGFile, sumoNetFile, sumoEdgeDataFile,
         sumoOriginalStateFile, sumoTempStateFile, targetFilePath
     ),
-    intersectionPerformance(sumoNetFile, sumoEdgeDataFile),
-    intersectionSignalOptimization(
-        sumoNetFile, sumoCFGFile, sumoRouFile, sumoNewTLSFile,
-    ),
-    intersectionVisulization(sumoNetFile, targetFilePath),
-    intersectionSpeedOptimization(sumoNetFile, sumoCFGFile, sumoRouFile)
+    IntersectionTrafficSituation(sumoNetFile, sumoEdgeDataFile),
+    IntersectionVisualization(sumoNetFile, targetFilePath),
+    IntersectionOptimization(),
+    IntersectionSpeedOptimization(sumoNetFile, sumoCFGFile, sumoRouFile),
+    IntersectionAnalysis(sumoNetFile, sumoCFGFile, sumoRouFile, sumoIntersectionDescription)
 ]
 
 # ------------------------------------------------------------------------------
@@ -101,20 +96,22 @@ toolModels = [
 botPrefix = """
 [WHO ARE YOU]
 You are a AI to assist human with traffic simulation control, making traffic and transportation decisions, or providing traffic analysis reports. Although you have access to a set of tools, your abilities are not limited to the tools at your disposal
-[YOUR ACTION GUIDLINES]
-1. You need to determine whether the human message is a traffic simulation control command or a question before making any move. If it is a traffic simulation control command, just execute the command and don't do any further information analysis. If
-2. You need to remeber the human message exactly. Your only purpose is to complete the task that is explicitly expressed in the human message. 
-3. Whenever you are about to come up with a thought, recall the human message to check if you already have enough information for the final answer. If so, you shouldn't infer or fabricate any more needs or questions based on your own ideas. 
-4. Remember what tools you have used, DONOT use the same tool repeatedly. Try to use the least amount of tools.
+[YOUR ACTION GUILDLINES]
+1. You need to determine whether the human message is a traffic simulation control command or a question before making any move. If it is a traffic simulation control command, just execute the command and don't do any further information analysis. If it is a question before making any move, just answer it using your own ability.
+2. You need to remember the human message exactly. Your only purpose is to complete the task that is explicitly expressed in the human message. 
+3. Whenever you are about to come up with a thought, recall the human message to check if you already have enough information for the final answer!!!! If so, you shouldn't infer or fabricate any more needs or questions based on your own ideas. 
+4. Remember what tools you have used, DO NOT use the same tool repeatedly. Try to use the least amount of tools.
 5. If you can not find any appropriate tool for your task, try to do it using your own ability and knowledge as a chat AI. 
 6. When you encounter tabular content in Observation, make sure you output the tabular content in markdown format into your final answer.
 7. When you realize that existing tools are not solving the problem at hand, you need to end your actions and ask the human for more information as your final answer.
+8. Note that since you can not access to the simulation configuration, every simulation is identical. You are not doing the same thing when asked to run the simulation.
+9. The most important thing is just follow the user's instruction, do not do anything the user do not asked to do.
 [THINGS YOU CANNOT DO]
 You are forbidden to fabricate any tool names. 
 You are forbidden to fabricate any input parameters when calling tools!
 [HOW TO GENERATE TRAFFIC REPORTS]
 Act as a human. And provide as much information as possible, including file path and tabular datasets.
-When human need to provede a report of the traffic situation of a road network, they usually start by observing the operation of the network, 
+When human need to provide a report of the traffic situation of a road network, they usually start by observing the operation of the network, 
 find a few intersections in the network that are in a poor operating condition, as well as their locations, try to optimize them, 
 and evaluate which parameters have become better and which ones are worse after the optimization. And form a report of the complete thought process in markdown format.
 For example:
@@ -183,11 +180,11 @@ def respond(msg: str, chat_history: list, thoughts: str):
 
 
 with gr.Blocks(
-        title="Demo Traffic Management Bot 哈哈哈", theme=gr.themes.Base(text_size=gr.themes.sizes.text_lg)
+        title="Demo Traffic Management Bot 哈哈哈", theme=gr.themes.Default(text_size=gr.themes.sizes.text_lg)
 ) as demo:
     with gr.Row(visible=True, variant="panel"):
         with gr.Column(visible=True, variant='default'):
-            chatbot = gr.Chatbot(scale=2, height=650)
+            chatbot = gr.Chatbot(scale=2)
 
             with gr.Row():
                 humanMsg = gr.Textbox(scale=2)
@@ -199,8 +196,8 @@ with gr.Blocks(
                     "Run the simulation",
                     "What's the most congested intersection?",
                     "How's the traffic for intersections? Show me the data in a table",
-                    "Locate intersection 2287714189 on the map",
-                    "Optimize the intersection with the highest timeloss."
+                    "Locate intersection [ID] on the map",
+                    "Optimize the intersection [ID]"
                 ],
                 inputs=[humanMsg],
                 # outputs=[humanMsg, chatbot],
@@ -209,7 +206,7 @@ with gr.Blocks(
         ReActMsg = gr.Text(
             label="大模型应答思维链及行为链",
             interactive=False,
-            lines=50
+            lines=35
         )
 
     humanMsg.submit(
@@ -225,5 +222,5 @@ with gr.Blocks(
     clearBtn.click(reset, [chatbot, ReActMsg], [chatbot, ReActMsg])
 
 if __name__ == "__main__":
-    demo.launch()
-    # demo.launch(share=True)
+    # demo.launch()
+    demo.launch(share=True)

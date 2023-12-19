@@ -80,7 +80,7 @@ Question: {input}
 class ConversationBot:
     def __init__(
             self, llm: AzureChatOpenAI, toolModels: List,
-            customedPrefix: str, verbose: bool = False
+            customedPrefix: str, verbose: bool = True
     ) -> Any:
         self.ch = CustomHandler()
         tools = []
@@ -111,7 +111,8 @@ class ConversationBot:
         self.agent_chain = AgentExecutor.from_agent_and_tools(
             agent=agent, tools=tools,
             verbose=verbose, memory=self.agent_memory,
-            handle_parsing_errors="Use the LLM output directly as your final answer!"
+            # handle_parsing_errors="Use the result/observation you got directly as your final answer! If you know the final answer, just output it to the user immediately!"
+            handle_parsing_errors="do not use any tool!!! Just use the LLM output as your final answer!!! do come up with any thoughts!!!"
         )
 
     def dialogue(self, input: str):

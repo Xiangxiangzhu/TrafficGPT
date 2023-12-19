@@ -1,0 +1,106 @@
+{
+  "ramp1In": {
+    "edge": [
+      "ramp1In",
+      "ramp1MergeFrom",
+      "ramp1Merge"
+    ],
+    "edge_in": [
+      "ramp1In",
+      "ramp1MergeFrom"
+    ],
+    "edge_out": [
+      "ramp1Merge"
+    ],
+    "lane": [
+      "ramp1In_0",
+      "ramp1MergeFrom_0",
+      "ramp1MergeFrom_1",
+      "ramp1MergeFrom_2",
+      "ramp1Merge_3",
+      "ramp1Merge_2",
+      "ramp1Merge_1",
+      "ramp1Merge_0"
+    ],
+    "lane_in": [
+      "ramp1In_0",
+      "ramp1MergeFrom_0",
+      "ramp1MergeFrom_1",
+      "ramp1MergeFrom_2"
+    ],
+    "lane_out": [
+      "ramp1Merge_3",
+      "ramp1Merge_2",
+      "ramp1Merge_1",
+      "ramp1Merge_0"
+    ],
+    "have_traffic_light": false,
+    "traffic_light_info": null,
+    "have_variable_speed_limit_control_device": true,
+    "variable_speed_limit_control_info": [
+      "ramp1MergeFrom"
+    ]
+  },
+  "2287722220": {
+    "edge": [
+      "55083473#2",
+      "219628433",
+      "55083473#1.4.49"
+    ],
+    "edge_in": [
+      "219628433",
+      "55083473#1.4.49"
+    ],
+    "edge_out": [
+      "55083473#2"
+    ],
+    "lane": [
+      "55083473#2_2",
+      "55083473#2_1",
+      "55083473#2_0",
+      "219628433_0",
+      "55083473#1.4.49_0",
+      "55083473#1.4.49_1",
+      "55083473#1.4.49_2"
+    ],
+    "lane_in": [
+      "219628433_0",
+      "55083473#1.4.49_0",
+      "55083473#1.4.49_1",
+      "55083473#1.4.49_2"
+    ],
+    "lane_out": [
+      "55083473#2_2",
+      "55083473#2_1",
+      "55083473#2_0"
+    ],
+    "have_traffic_light": false,
+    "traffic_light_info": null,
+    "have_variable_speed_limit_control_device": false,
+    "variable_speed_limit_control_info": null
+  },
+  "2289516001": {
+    "edge": [],
+    "edge_in": [],
+    "edge_out": [],
+    "lane": [],
+    "lane_in": [],
+    "lane_out": [],
+    "have_traffic_light": false,
+    "traffic_light_info": null,
+    "have_variable_speed_limit_control_device": false,
+    "variable_speed_limit_control_info": null
+  },
+  "J2": {
+    "edge": [],
+    "edge_in": [],
+    "edge_out": [],
+    "lane": [],
+    "lane_in": [],
+    "lane_out": [],
+    "have_traffic_light": false,
+    "traffic_light_info": null,
+    "have_variable_speed_limit_control_device": false,
+    "variable_speed_limit_control_info": null
+  }
+}

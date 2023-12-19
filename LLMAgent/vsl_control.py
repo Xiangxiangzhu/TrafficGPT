@@ -31,13 +31,13 @@ class VSL:
                               default=False, help="tell me what you are doing")
         return opt_parser.parse_args(args=args)
 
-    def run_vsl(self):
+    def upgrade_vsl(self):
         if not self.options.netfile or not self.options.routefiles:
             raise RuntimeError("Error: Either both the net file and the route file or one of them are/is missing.")
 
         # check the period of the given route files, and find the peak-flow period if necessary
 
-        def update_lane_speed(file_name: str, edge_id: str, new_speed: float):
+        def update_lane_speed(file_name: str, edge_id: str, new_speed_0: float, new_speed_1: float, new_speed_2: float):
             # Parse the XML file
             tree = ET.parse(file_name)
             root = tree.getroot()
@@ -45,9 +45,11 @@ class VSL:
             # Find the edge with the specified id and update the speed of lane with index 0
             for edge in root.findall(f'.//edge[@id="{edge_id}"]'):
                 for lane in edge.findall('lane[@index="0"]'):
-                    lane.set('speed', str(new_speed))
+                    lane.set('speed', str(new_speed_0))
                 for lane in edge.findall('lane[@index="1"]'):
-                    lane.set('speed', str(new_speed))
+                    lane.set('speed', str(new_speed_1))
+                for lane in edge.findall('lane[@index="2"]'):
+                    lane.set('speed', str(new_speed_2))
 
             # Save the modified XML to a file named 'aa.xml'
             tree.write(
@@ -55,4 +57,4 @@ class VSL:
                 encoding='utf-8', xml_declaration=True)
 
         # Example usage:
-        update_lane_speed(self.options.netfile, '29496808#1.959', 3.0)
+        update_lane_speed(self.options.netfile, 'ramp1MergeFrom', 7.0, 10.0, 12.0)
